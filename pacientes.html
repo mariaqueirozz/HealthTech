@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthTech - Pacientes</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">HealthTech</div>
+
+        <nav class="nav">
+            <a href="painel.html">Painel</a>
+            <a href="pacientes.html" class="active">Pacientes</a>
+            <a href="profissionais.html">Profissionais</a>
+            <a href="consultas.html">Consultas</a>
+            <a href="internacoes.html">Internações</a>
+            <a href="quartos.html">Quartos</a>
+            <a href="historico.html">Histórico médico</a>
+            <a href="index.html">Sair</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <h1 class="page-title">Pacientes</h1>
+        <p class="subtitle">Cadastro e consulta de pacientes.</p>
+
+        <div class="toolbar">
+            <input type="text" class="search" placeholder="Buscar paciente">
+            <button class="btn">Novo paciente</button>
+        </div>
+
+        <div class="content-grid">
+
+            <section class="card table-wrap">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Data de nascimento</th>
+                            <th>Telefone</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Ana Souza</td>
+                            <td>000.000.000-01</td>
+                            <td>12/03/1990</td>
+                            <td>(31) 90000-0001</td>
+                            <td>
+                                <button class="btn-small">Editar</button>
+                                <button class="btn-small">Excluir</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Carlos Lima</td>
+                            <td>000.000.000-02</td>
+                            <td>05/11/1978</td>
+                            <td>(31) 90000-0002</td>
+                            <td>
+                                <button class="btn-small">Editar</button>
+                                <button class="btn-small">Excluir</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Beatriz Rocha</td>
+                            <td>000.000.000-03</td>
+                            <td>21/07/2001</td>
+                            <td>(31) 90000-0003</td>
+                            <td>
+                                <button class="btn-small">Editar</button>
+                                <button class="btn-small">Excluir</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </section>
+
+            <section class="card">
+
+                <h2 class="form-title">Cadastrar paciente</h2>
+
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input type="text" id="cpf" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="nascimento">Data de nascimento</label>
+                    <input type="date" id="nascimento" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" id="telefone" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco">Endereço</label>
+                    <input type="text" id="endereco" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" class="form-control">
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn">Salvar</button>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
