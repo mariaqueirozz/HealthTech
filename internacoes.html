@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthTech - Internações</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">HealthTech</div>
+
+        <nav class="nav">
+            <a href="painel.html">Painel</a>
+            <a href="pacientes.html">Pacientes</a>
+            <a href="profissionais.html">Profissionais</a>
+            <a href="consultas.html">Consultas</a>
+            <a href="internacoes.html" class="active">Internações</a>
+            <a href="quartos.html">Quartos</a>
+            <a href="historico.html">Histórico médico</a>
+            <a href="index.html">Sair</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <h1 class="page-title">Internações</h1>
+        <p class="subtitle">Controle de entrada e alta de pacientes.</p>
+
+        <div class="toolbar">
+            <input type="text" class="search" placeholder="Buscar internação">
+            <button class="btn">Nova internação</button>
+        </div>
+
+        <div class="content-grid">
+
+            <section class="card table-wrap">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Profissional</th>
+                            <th>Quarto</th>
+                            <th>Entrada</th>
+                            <th>Alta prevista</th>
+                            <th>Alta efetiva</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Carlos Lima</td>
+                            <td>Dr. Paulo Mendes</td>
+                            <td>203</td>
+                            <td>27/09/2026</td>
+                            <td>02/10/2026</td>
+                            <td>-</td>
+                            <td>
+                                <button class="btn-small">Editar</button>
+                                <button class="btn-small">Excluir</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Ana Souza</td>
+                            <td>Dra. Helena Costa</td>
+                            <td>105</td>
+                            <td>15/09/2026</td>
+                            <td>18/09/2026</td>
+                            <td>18/09/2026</td>
+                            <td>
+                                <button class="btn-small">Editar</button>
+                                <button class="btn-small">Excluir</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Beatriz Rocha</td>
+                            <td>Dr. Ricardo Alves</td>
+                            <td>305</td>
+                            <td>20/09/2026</td>
+                            <td>25/09/2026</td>
+                            <td>25/09/2026</td>
+                            <td>
+                                <button class="btn-small">Editar</button>
+                                <button class="btn-small">Excluir</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </section>
+
+            <section class="card">
+
+                <h2 class="form-title">Cadastrar internação</h2>
+
+                <div class="form-group">
+                    <label for="paciente">Paciente</label>
+                    <select id="paciente" class="form-control">
+                        <option>Selecione o paciente</option>
+                        <option>Ana Souza</option>
+                        <option>Carlos Lima</option>
+                        <option>Beatriz Rocha</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="profissional">Profissional responsável</label>
+                    <select id="profissional" class="form-control">
+                        <option>Selecione o profissional</option>
+                        <option>Dr. Paulo Mendes</option>
+                        <option>Dra. Helena Costa</option>
+                        <option>Dr. Ricardo Alves</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="quarto">Quarto</label>
+                    <select id="quarto" class="form-control">
+                        <option>Selecione o quarto</option>
+                        <option>105</option>
+                        <option>203</option>
+                        <option>305</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="entrada">Data de entrada</label>
+                    <input type="date" id="entrada" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="alta-prevista">Data prevista de alta</label>
+                    <input type="date" id="alta-prevista" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="alta-efetiva">Data efetiva de alta</label>
+                    <input type="date" id="alta-efetiva" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" class="form-control"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn">Salvar</button>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
