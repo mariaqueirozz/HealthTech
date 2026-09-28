@@ -1,0 +1,278 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f7f7;
+    color: #102d35;
+}
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 28px;
+}
+
+.login-card {
+    width: 360px;
+    background-color: white;
+    border: 1px solid #d2dfe1;
+    border-radius: 8px;
+    padding: 20px 18px;
+}
+
+.login-title {
+    font-size: 27px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.login-subtitle {
+    color: #58717a;
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #58717a;
+    margin-bottom: 7px;
+}
+
+.form-control {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ccd9dc;
+    border-radius: 6px;
+    padding: 0 11px;
+    background-color: white;
+    color: #172f36;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    border-color: #0e7780;
+}
+
+textarea.form-control {
+    height: 80px;
+    padding: 10px 11px;
+    resize: vertical;
+}
+
+.btn-login {
+    width: 100%;
+    height: 40px;
+    margin-top: 2px;
+    border: none;
+    border-radius: 6px;
+    background-color: #0e7780;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background-color: #0b6870;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 230px;
+    height: 100vh;
+    background-color: #0b5c63;
+    color: white;
+    padding: 26px 16px;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 26px;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nav a {
+    padding: 11px 12px;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.nav a:hover,
+.nav a.active {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.main {
+    margin-left: 230px;
+    min-height: 100vh;
+    padding: 28px 36px 50px;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #58717a;
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #d2dfe1;
+    border-radius: 8px;
+    padding: 18px;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.stat-label {
+    color: #58717a;
+}
+
+.section-title {
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    color: #506c75;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 12px;
+    border-bottom: 1px solid #ccd9dc;
+}
+
+td {
+    padding: 11px 12px;
+    border-bottom: 1px solid #d7e0e2;
+    font-size: 16px;
+}
+
+tr:last-child td {
+    border-bottom: 0;
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.search {
+    width: 320px;
+    height: 40px;
+    border: 1px solid #ccd9dc;
+    border-radius: 6px;
+    padding: 0 12px;
+    background-color: white;
+    outline: none;
+    font-family: inherit;
+}
+
+.search:focus {
+    border-color: #0e7780;
+}
+
+.btn {
+    border: none;
+    border-radius: 6px;
+    padding: 0 16px;
+    min-height: 40px;
+    background-color: #0e7780;
+    color: white;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background-color: #0b6870;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 24px;
+    align-items: start;
+}
+
+.form-title {
+    font-size: 19px;
+    margin-bottom: 17px;
+}
+
+.form-actions {
+    margin-top: 18px;
+}
+
+.form-actions .btn {
+    width: 100%;
+}
+
+.btn-small {
+    background-color: white;
+    color: #0e7780;
+    border: 1px solid #0e7780;
+    border-radius: 6px;
+    padding: 5px 9px;
+    cursor: pointer;
+    margin-right: 4px;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.btn-small:hover {
+    background-color: #0e7780;
+    color: white;
+}
+
+select.form-control {
+    cursor: pointer;
+}
