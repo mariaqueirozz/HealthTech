@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login - Hospital Vida</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Hospital Vida</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="pagina-login">
-    <form class="login" onsubmit="return false;">
-      <h1>Hospital Vida</h1>
-      <p class="subtitulo">Entre para acessar o sistema.</p>
+    <div class="login-page">
+        <form class="login-card" onsubmit="return false;">
+            <h1 class="login-title">Hospital Vida</h1>
+            <p class="login-subtitle">Entre para acessar o sistema.</p>
 
-      <label for="email">E-mail</label>
-      <input type="email" id="email">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" class="form-control">
+            </div>
 
-      <label for="senha">Senha</label>
-      <input type="password" id="senha">
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" class="form-control">
+            </div>
 
-      <button type="button">Entrar</button>
-    </form>
-  </div>
+            <button type="button" class="btn-login">Entrar</button>
+        </form>
+    </div>
 </body>
 </html>
