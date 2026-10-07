@@ -22,3 +22,176 @@
       <a href="index.html">Sair</a>
     </nav>
   </aside>
+
+  <main class="main">
+
+    <h1 class="page-title">Quartos</h1>
+    <p class="subtitle">Ocupação e disponibilidade dos quartos.</p>
+
+    <div class="toolbar">
+      <input type="text" class="search" id="busca" placeholder="Buscar" aria-label="Buscar quartos">
+      <button type="button" class="btn" id="novo">Novo quarto</button>
+    </div>
+
+    <div class="content-grid">
+
+      <section class="card table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Andar</th>
+              <th>Capacidade</th>
+              <th>Ocupação</th>
+              <th>Situação</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="lista">
+            <tr>
+              <td>105</td>
+              <td>1º</td>
+              <td>2</td>
+              <td>0/2</td>
+              <td><span class="selo disponivel">Disponível</span></td>
+              <td>
+                <button class="btn-small" data-acao="editar">Editar</button>
+                <button class="btn-small" data-acao="excluir">Excluir</button>
+              </td>
+            </tr>
+            <tr>
+              <td>203</td>
+              <td>2º</td>
+              <td>2</td>
+              <td>1/2</td>
+              <td><span class="selo disponivel">Disponível</span></td>
+              <td>
+                <button class="btn-small" data-acao="editar">Editar</button>
+                <button class="btn-small" data-acao="excluir">Excluir</button>
+              </td>
+            </tr>
+            <tr>
+              <td>204</td>
+              <td>2º</td>
+              <td>1</td>
+              <td>1/1</td>
+              <td><span class="selo ocupado">Ocupado</span></td>
+              <td>
+                <button class="btn-small" data-acao="editar">Editar</button>
+                <button class="btn-small" data-acao="excluir">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+
+        <h2 class="form-title">Cadastrar quarto</h2>
+
+        <div class="form-group">
+          <label for="numero">Número de identificação</label>
+          <input type="text" id="numero" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="andar">Andar</label>
+          <input type="number" id="andar" class="form-control" min="0">
+        </div>
+
+        <div class="form-group">
+          <label for="capacidade">Capacidade máxima</label>
+          <input type="number" id="capacidade" class="form-control" min="1">
+        </div>
+
+        <div class="form-group">
+          <label for="situacao">Situação</label>
+          <select id="situacao" class="form-control">
+            <option>Disponível</option>
+            <option>Ocupado</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn" id="salvar">Salvar</button>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const lista = document.getElementById('lista');
+    const busca = document.getElementById('busca');
+
+    
+    busca.addEventListener('input', () => {
+      const termo = busca.value.toLowerCase();
+      lista.querySelectorAll('tr').forEach(tr => {
+        tr.hidden = !tr.textContent.toLowerCase().includes(termo);
+      });
+    });
+
+    
+    document.getElementById('novo').addEventListener('click', () => {
+      document.getElementById('numero').focus();
+    });
+
+    
+    lista.addEventListener('click', (e) => {
+      const botao = e.target.closest('button[data-acao]');
+      if (!botao) return;
+      const linha = botao.closest('tr');
+
+      if (botao.dataset.acao === 'excluir') {
+        if (confirm('Excluir este quarto?')) linha.remove();
+      } else {
+        const c = linha.children;
+        document.getElementById('numero').value = c[0].textContent;
+        document.getElementById('andar').value = parseInt(c[1].textContent);
+        document.getElementById('capacidade').value = c[2].textContent;
+        document.getElementById('situacao').value = c[4].textContent.trim();
+        linha.remove();
+        document.getElementById('numero').focus();
+      }
+    });
+
+    
+    document.getElementById('salvar').addEventListener('click', () => {
+      const numero = document.getElementById('numero').value.trim();
+      const andar = document.getElementById('andar').value;
+      const capacidade = document.getElementById('capacidade').value;
+      const situacao = document.getElementById('situacao').value;
+
+      if (!numero || !andar || !capacidade) {
+        alert('Preencha o número, o andar e a capacidade do quarto.');
+        return;
+      }
+
+      const classe = situacao === 'Ocupado' ? 'ocupado' : 'disponivel';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td></td>
+        <td>${andar}º</td>
+        <td></td>
+        <td></td>
+        <td><span class="selo ${classe}"></span></td>
+        <td>
+          <button class="btn-small" data-acao="editar">Editar</button>
+          <button class="btn-small" data-acao="excluir">Excluir</button>
+        </td>`;
+      tr.children[0].textContent = numero;
+      tr.children[2].textContent = capacidade;
+      tr.children[3].textContent = (situacao === 'Ocupado' ? capacidade : 0) + '/' + capacidade;
+      tr.querySelector('.selo').textContent = situacao;
+      lista.appendChild(tr);
+
+      document.getElementById('numero').value = '';
+      document.getElementById('andar').value = '';
+      document.getElementById('capacidade').value = '';
+      document.getElementById('situacao').value = 'Disponível';
+    });
+  </script>
+</body>
+</html>
