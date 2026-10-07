@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Histórico médico - HealthTech</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="logo">HealthTech</div>
+
+    <nav class="nav">
+      <a href="painel.html">Painel</a>
+      <a href="pacientes.html">Pacientes</a>
+      <a href="profissionais.html">Profissionais</a>
+      <a href="consultas.html">Consultas</a>
+      <a href="internacoes.html">Internações</a>
+      <a href="quartos.html">Quartos</a>
+      <a href="historico.html" class="active">Histórico médico</a>
+      <a href="index.html">Sair</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+
+    <h1 class="page-title">Histórico médico</h1>
+    <p class="subtitle">Consulte tudo que já aconteceu com um paciente.</p>
+
+    <div class="toolbar">
+      <select id="paciente" class="form-control history-select" aria-label="Paciente">
+        <option>Ana Souza</option>
+        <option>Carlos Lima</option>
+        <option>Beatriz Rocha</option>
+      </select>
+      <button type="button" class="btn" id="ver">Ver histórico</button>
+    </div>
+
+    <section class="card history-card">
+      <h2 class="card-title">Consultas realizadas</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Profissional</th>
+              <th>Motivo</th>
+            </tr>
+          </thead>
+          <tbody id="consultas">
+            <tr>
+              <td>25/09/2026</td>
+              <td>Dr. Paulo Mendes</td>
+              <td>Dor no peito</td>
+            </tr>
+            <tr>
+              <td>02/08/2026</td>
+              <td>Dra. Helena Costa</td>
+              <td>Retorno</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card history-card">
+      <h2 class="card-title">Internações realizadas</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Entrada</th>
+              <th>Alta</th>
+              <th>Quarto</th>
+            </tr>
+          </thead>
+          <tbody id="internacoes">
+            <tr>
+              <td>15/09/2026</td>
+              <td>18/09/2026</td>
+              <td>105</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card history-card">
+      <h2 class="card-title">Informações relevantes</h2>
+      <p class="history-info" id="informacoes">Registros feitos durante os atendimentos aparecem aqui.</p>
+    </section>
+
+  </main>
+
+  <script>
+    const historicos = {
+      'Ana Souza': {
+        consultas: [
+          ['25/09/2026', 'Dr. Paulo Mendes', 'Dor no peito'],
+          ['02/08/2026', 'Dra. Helena Costa', 'Retorno']
+        ],
+        internacoes: [
+          ['15/09/2026', '18/09/2026', '105']
+        ],
+        informacoes: 'Registros feitos durante os atendimentos aparecem aqui.'
+      },
+      'Carlos Lima': {
+        consultas: [],
+        internacoes: [
+          ['27/09/2026', '02/10/2026', '203']
+        ],
+        informacoes: 'Registros feitos durante os atendimentos aparecem aqui.'
+      },
+      'Beatriz Rocha': {
+        consultas: [
+          ['25/09/2026', 'Dr. Paulo Mendes', 'Check-up']
+        ],
+        internacoes: [
+          ['20/09/2026', '25/09/2026', '305']
+        ],
+        informacoes: 'Registros feitos durante os atendimentos aparecem aqui.'
+      }
+    };
+
+    function preencher(tbody, linhas, mensagem) {
+      tbody.innerHTML = '';
+
+      if (linhas.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 3;
+        td.className = 'empty';
+        td.textContent = mensagem;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+
+      linhas.forEach(linha => {
+        const tr = document.createElement('tr');
+        linha.forEach(valor => {
+          const td = document.createElement('td');
+          td.textContent = valor;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('ver').addEventListener('click', () => {
+      const nome = document.getElementById('paciente').value;
+      const historico = historicos[nome];
+
+      preencher(document.getElementById('consultas'), historico.consultas, 'Nenhuma consulta realizada.');
+      preencher(document.getElementById('internacoes'), historico.internacoes, 'Nenhuma internação realizada.');
+      document.getElementById('informacoes').textContent = historico.informacoes;
+    });
+  </script>
+</body>
+</html>

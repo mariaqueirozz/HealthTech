@@ -295,3 +295,33 @@ select.form-control {
     background-color: #fde6c8;
     color: #a15a0a;
 }
+
+.history-select {
+    width: 320px;
+}
+
+.history-card {
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.history-card th {
+    font-size: 13px;
+}
+
+.history-card tr:last-child td {
+    border-bottom: 1px solid #d7e0e2;
+}
+
+.history-card td.empty {
+    color: #58717a;
+}
+
+.history-info {
+    font-size: 16px;
+}
