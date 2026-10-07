@@ -21,3 +21,189 @@
       <a href="historico.html">Histórico médico</a>
       <a href="index.html">Sair</a>
     </nav>
+  </aside>
+
+  <main class="main">
+
+    <h1 class="page-title">Consultas</h1>
+    <p class="subtitle">Agendamento e controle de consultas.</p>
+
+    <div class="toolbar">
+      <input type="text" class="search" id="busca" placeholder="Buscar" aria-label="Buscar consultas">
+      <button type="button" class="btn" id="nova">Nova consulta</button>
+    </div>
+
+    <div class="content-grid">
+
+      <section class="card table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Profissional</th>
+              <th>Data</th>
+              <th>Horário</th>
+              <th>Situação</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="lista">
+            <tr>
+              <td>Ana Souza</td>
+              <td>Dr. Paulo Mendes</td>
+              <td>30/09/2026</td>
+              <td>09:00</td>
+              <td><span class="selo agendada">Agendada</span></td>
+              <td>
+                <button class="btn-small" data-acao="editar">Editar</button>
+                <button class="btn-small" data-acao="excluir">Excluir</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Carlos Lima</td>
+              <td>Dra. Helena Costa</td>
+              <td>30/09/2026</td>
+              <td>10:30</td>
+              <td><span class="selo agendada">Agendada</span></td>
+              <td>
+                <button class="btn-small" data-acao="editar">Editar</button>
+                <button class="btn-small" data-acao="excluir">Excluir</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Beatriz Rocha</td>
+              <td>Dr. Paulo Mendes</td>
+              <td>25/09/2026</td>
+              <td>14:00</td>
+              <td><span class="selo realizada">Realizada</span></td>
+              <td>
+                <button class="btn-small" data-acao="editar">Editar</button>
+                <button class="btn-small" data-acao="excluir">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+
+        <h2 class="form-title">Cadastrar consulta</h2>
+
+        <div class="form-group">
+          <label for="paciente">Paciente</label>
+          <select id="paciente" class="form-control">
+            <option>Ana Souza</option>
+            <option>Carlos Lima</option>
+            <option>Beatriz Rocha</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="profissional">Profissional</label>
+          <select id="profissional" class="form-control">
+            <option>Dr. Paulo Mendes</option>
+            <option>Dra. Helena Costa</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="data">Data</label>
+          <input type="date" id="data" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="horario">Horário</label>
+          <input type="time" id="horario" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="motivo">Motivo</label>
+          <input type="text" id="motivo" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="obs">Observações médicas</label>
+          <textarea id="obs" class="form-control"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn" id="salvar">Salvar</button>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const lista = document.getElementById('lista');
+    const busca = document.getElementById('busca');
+
+    
+    busca.addEventListener('input', () => {
+      const termo = busca.value.toLowerCase();
+      lista.querySelectorAll('tr').forEach(tr => {
+        tr.hidden = !tr.textContent.toLowerCase().includes(termo);
+      });
+    });
+
+    
+    document.getElementById('nova').addEventListener('click', () => {
+      document.getElementById('paciente').focus();
+    });
+
+    
+    lista.addEventListener('click', (e) => {
+      const botao = e.target.closest('button[data-acao]');
+      if (!botao) return;
+      const linha = botao.closest('tr');
+
+      if (botao.dataset.acao === 'excluir') {
+        if (confirm('Excluir esta consulta?')) linha.remove();
+      } else {
+        const c = linha.children;
+        document.getElementById('paciente').value = c[0].textContent;
+        document.getElementById('profissional').value = c[1].textContent;
+        const [d, m, a] = c[2].textContent.split('/');
+        document.getElementById('data').value = `${a}-${m}-${d}`;
+        document.getElementById('horario').value = c[3].textContent;
+        linha.remove();
+        document.getElementById('paciente').focus();
+      }
+    });
+
+    
+    document.getElementById('salvar').addEventListener('click', () => {
+      const paciente = document.getElementById('paciente').value;
+      const profissional = document.getElementById('profissional').value;
+      const data = document.getElementById('data').value;
+      const horario = document.getElementById('horario').value;
+
+      if (!data || !horario) {
+        alert('Informe a data e o horário da consulta.');
+        return;
+      }
+
+      const [a, m, d] = data.split('-');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td></td><td></td>
+        <td>${d}/${m}/${a}</td>
+        <td>${horario}</td>
+        <td><span class="selo agendada">Agendada</span></td>
+        <td>
+          <button class="btn-small" data-acao="editar">Editar</button>
+          <button class="btn-small" data-acao="excluir">Excluir</button>
+        </td>`;
+      tr.children[0].textContent = paciente;
+      tr.children[1].textContent = profissional;
+      lista.appendChild(tr);
+
+      document.getElementById('data').value = '';
+      document.getElementById('horario').value = '';
+      document.getElementById('motivo').value = '';
+      document.getElementById('obs').value = '';
+    });
+  </script>
+</body>
+</html>
