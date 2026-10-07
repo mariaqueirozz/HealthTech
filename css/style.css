@@ -276,3 +276,22 @@ tr:last-child td {
 select.form-control {
     cursor: pointer;
 }
+
+.selo {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.selo.agendada,
+.selo.disponivel {
+    background-color: #dff0f0;
+    color: #0b4f56;
+}
+
+.selo.realizada,
+.selo.ocupado {
+    background-color: #fde6c8;
+    color: #a15a0a;
+}
