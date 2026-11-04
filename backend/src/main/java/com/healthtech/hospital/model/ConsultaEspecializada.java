@@ -1,7 +1,8 @@
+import com.healthtech.hospital.exception.RegraDeNegocioException;
 import com.healthtech.hospital.model.Consulta;
+import com.healthtech.hospital.model.MedicoEspecialista;
 
 import jakarta.persistence.Entity;
-import com.healthtech.hospital.exception.RegraDeNegocioException;
 import jakarta.validation.constraints.NotBlank;
 
 
@@ -24,5 +25,11 @@ public void validar() {
         throw new RegraDeNegocioException("O profissional responsável deve ser especialista em " + especialidade + ".");
     }
 }
-    
+    public String getEspecialidade() {
+    return especialidade;
+}
+
+public void setEspecialidade(String especialidade) {
+    this.especialidade = especialidade;
+}
 }
