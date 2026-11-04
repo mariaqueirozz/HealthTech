@@ -50,3 +50,28 @@ public class ProcedimentoCirurgico extends Atendimento {
             throw new RegraDeNegocioException("O tipo de cirurgia é obrigatório.");
         }
     }
+
+    @Override
+    public void iniciar() {
+        if (status != StatusCirurgia.AGENDADO) {
+            throw new RegraDeNegocioException("Só é possível iniciar um procedimento agendado.");
+        }
+        dataHoraEfetiva = LocalDateTime.now();
+        status = StatusCirurgia.EM_ANDAMENTO;
+    }
+
+    @Override
+    public void concluir() {
+        if (status != StatusCirurgia.EM_ANDAMENTO) {
+            throw new RegraDeNegocioException("Não é permitido concluir um procedimento que não foi iniciado.");
+        }
+        status = StatusCirurgia.CONCLUIDO;
+    }
+
+    @Override
+    public void cancelar() {
+        if (status == StatusCirurgia.CONCLUIDO || status == StatusCirurgia.CANCELADO) {
+            throw new RegraDeNegocioException("Um procedimento " + status + " não pode ser cancelado.");
+        }
+        status = StatusCirurgia.CANCELADO;
+    }
