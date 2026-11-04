@@ -53,3 +53,19 @@ public abstract class Atendimento {
     public void cancelar() { throw naoSuportada("cancelar"); }
     public void marcarNaoComparecimento() { throw naoSuportada("marcar não comparecimento"); }
     public void registrarObservacoes(String observacoes) { throw naoSuportada("registrar observações"); }
+    private RegraDeNegocioException naoSuportada(String acao) {
+        return new RegraDeNegocioException("A operação '" + acao + "' não se aplica a este tipo de atendimento.");
+    }
+
+    public Long getId() { return id; }
+    public Paciente getPaciente() { return paciente; }
+    public void setPaciente(Paciente paciente) { this.paciente = paciente; }
+    public Profissional getProfissional() { return profissional; }
+    public void setProfissional(Profissional profissional) { this.profissional = profissional; }
+    public Long getPacienteId() { return pacienteId; }
+    public void setPacienteId(Long pacienteId) { this.pacienteId = pacienteId; }
+    public Long getProfissionalId() { return profissionalId; }
+    public void setProfissionalId(Long profissionalId) { this.profissionalId = profissionalId; }
+    public LocalDateTime getDataHora() { return dataHora; }
+    public void setDataHora(LocalDateTime dataHora) { this.dataHora = dataHora; }
+}
