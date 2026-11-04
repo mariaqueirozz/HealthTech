@@ -1,0 +1,39 @@
+package com.healthtech.hospital.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.healthtech.hospital.model.enums.StatusCirurgia;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+public class ProcedimentoCirurgico extends Atendimento {
+
+    @Column(length = 2000)
+    private String descricao;
+
+    private String tipoCirurgia;
+
+    @Column(length = 2000)
+    private String observacoesPreOperatorias;
+
+    @Column(length = 2000)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String observacoesPosOperatorias;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private LocalDateTime dataHoraEfetiva;
+
+    @Enumerated(EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private StatusCirurgia status = StatusCirurgia.AGENDADO;
+
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public String getTipoCirurgia() { return tipoCirurgia; }
+    public void setTipoCirurgia(String tipoCirurgia) { this.tipoCirurgia = tipoCirurgia; }
+    public String getObservacoesPreOperatorias() { return observacoesPreOperatorias; }
+    public void setObservacoesPreOperatorias(String o) { this.observacoesPreOperatorias = o; }
+    public String getObservacoesPosOperatorias() { return observacoesPosOperatorias; }
+    public LocalDateTime getDataHoraEfetiva() { return dataHoraEfetiva; }
+    public StatusCirurgia getStatus() { return status; }
+}
