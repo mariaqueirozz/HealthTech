@@ -75,3 +75,11 @@ public class ProcedimentoCirurgico extends Atendimento {
         }
         status = StatusCirurgia.CANCELADO;
     }
+
+    @Override
+    public void registrarObservacoes(String observacoes) {
+        if (status != StatusCirurgia.EM_ANDAMENTO && status != StatusCirurgia.CONCLUIDO) {
+            throw new RegraDeNegocioException("As observações pós-operatórias só podem ser registradas após o início do procedimento.");
+        }
+        this.observacoesPosOperatorias = observacoes;
+    }
