@@ -21,3 +21,29 @@ public abstract class Consulta extends Atendimento {
         }
         status = novo;
     }
+ @Override
+    public void confirmar() { mudarPara(StatusConsulta.CONFIRMADA); }
+
+    @Override
+    public void iniciar() { mudarPara(StatusConsulta.EM_ATENDIMENTO); }
+
+    @Override
+    public void concluir() { mudarPara(StatusConsulta.CONCLUIDA); }
+
+    @Override
+    public void cancelar() { mudarPara(StatusConsulta.CANCELADA); }
+
+    @Override
+    public void marcarNaoComparecimento() { mudarPara(StatusConsulta.NAO_COMPARECEU); }
+
+    @Override
+    public void registrarObservacoes(String observacoes) {
+        if (status != StatusConsulta.EM_ATENDIMENTO && status != StatusConsulta.CONCLUIDA) {
+            throw new RegraDeNegocioException("As observações só podem ser registradas durante ou após o atendimento.");
+        }
+        this.observacoes = observacoes;
+    }
+
+    public StatusConsulta getStatus() { return status; }
+    public String getObservacoes() { return observacoes; }
+}
