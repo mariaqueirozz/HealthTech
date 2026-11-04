@@ -1,6 +1,7 @@
 package com.healthtech.hospital.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.healthtech.hospital.exception.RegraDeNegocioException;
 import com.healthtech.hospital.model.enums.StatusCirurgia;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -27,16 +28,6 @@ public class ProcedimentoCirurgico extends Atendimento {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private StatusCirurgia status = StatusCirurgia.AGENDADO;
 
-    public String getDescricao() { return descricao; }
-    public void setDescricao(String descricao) { this.descricao = descricao; }
-    public String getTipoCirurgia() { return tipoCirurgia; }
-    public void setTipoCirurgia(String tipoCirurgia) { this.tipoCirurgia = tipoCirurgia; }
-    public String getObservacoesPreOperatorias() { return observacoesPreOperatorias; }
-    public void setObservacoesPreOperatorias(String o) { this.observacoesPreOperatorias = o; }
-    public String getObservacoesPosOperatorias() { return observacoesPosOperatorias; }
-    public LocalDateTime getDataHoraEfetiva() { return dataHoraEfetiva; }
-    public StatusCirurgia getStatus() { return status; }
-}
     @Override
     public void validar() {
         validarComum();
@@ -83,3 +74,14 @@ public class ProcedimentoCirurgico extends Atendimento {
         }
         this.observacoesPosOperatorias = observacoes;
     }
+
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public String getTipoCirurgia() { return tipoCirurgia; }
+    public void setTipoCirurgia(String tipoCirurgia) { this.tipoCirurgia = tipoCirurgia; }
+    public String getObservacoesPreOperatorias() { return observacoesPreOperatorias; }
+    public void setObservacoesPreOperatorias(String o) { this.observacoesPreOperatorias = o; }
+    public String getObservacoesPosOperatorias() { return observacoesPosOperatorias; }
+    public LocalDateTime getDataHoraEfetiva() { return dataHoraEfetiva; }
+    public StatusCirurgia getStatus() { return status; }
+}
