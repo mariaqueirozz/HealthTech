@@ -37,3 +37,16 @@ public class ProcedimentoCirurgico extends Atendimento {
     public LocalDateTime getDataHoraEfetiva() { return dataHoraEfetiva; }
     public StatusCirurgia getStatus() { return status; }
 }
+    @Override
+    public void validar() {
+        validarComum();
+        if (!(getProfissional() instanceof Cirurgiao)) {
+            throw new RegraDeNegocioException("O procedimento cirúrgico exige um cirurgião responsável.");
+        }
+        if (descricao == null || descricao.isBlank()) {
+            throw new RegraDeNegocioException("A descrição do procedimento é obrigatória.");
+        }
+        if (tipoCirurgia == null || tipoCirurgia.isBlank()) {
+            throw new RegraDeNegocioException("O tipo de cirurgia é obrigatório.");
+        }
+    }
