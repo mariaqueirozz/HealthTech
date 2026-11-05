@@ -38,11 +38,47 @@ public class InternacaoController {
                 .orElseThrow(() -> new RegraDeNegocioException("Quarto não encontrado."));
         internacao.setPaciente(paciente); internacao.setProfissional(profissional); internacao.setQuarto(quarto);
         internacao.validar();
+        if (internacaoRepository.existsByPaciente_IdAndDataEfetivaAltaIsNull(paciente.getId())) {
+            throw new RegraDeNegocioException("O paciente já possui uma internação ativa.");
+        }
         long ocupacao = internacaoRepository.countByQuarto_IdAndDataEfetivaAltaIsNull(quarto.getId());
         if (!quarto.temVaga(ocupacao)) throw new RegraDeNegocioException("O quarto não possui vagas disponíveis.");
         Internacao salva = internacaoRepository.save(internacao);
         quarto.atualizarSituacao(ocupacao + 1); quartoRepository.save(quarto);
         return ResponseEntity.status(HttpStatus.CREATED).body(salva);
+    }
+
+    @PutMapping("/{id}") @Transactional
+    public ResponseEntity<Internacao> atualizar(@PathVariable Long id, @RequestBody Internacao dados) {
+        Internacao internacao = internacaoRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Internação não encontrada."));
+        if (!internacao.isAtiva()) throw new RegraDeNegocioException("Não é possível editar uma internação que já teve alta.");
+        Paciente paciente = pacienteRepository.findById(dados.getPacienteId())
+                .orElseThrow(() -> new RegraDeNegocioException("Paciente não encontrado."));
+        Profissional profissional = profissionalRepository.findById(dados.getProfissionalId())
+                .orElseThrow(() -> new RegraDeNegocioException("Profissional não encontrado."));
+        if (internacaoRepository.existsByPaciente_IdAndDataEfetivaAltaIsNullAndIdNot(paciente.getId(), id)) {
+            throw new RegraDeNegocioException("O paciente já possui uma internação ativa.");
+        }
+        Quarto quartoAnterior = quartoRepository.buscarPorIdComBloqueio(internacao.getQuarto().getId())
+                .orElseThrow(() -> new RegraDeNegocioException("Quarto não encontrado."));
+        Quarto quarto = quartoRepository.buscarPorIdComBloqueio(dados.getQuartoId())
+                .orElseThrow(() -> new RegraDeNegocioException("Quarto não encontrado."));
+        boolean trocouDeQuarto = !quarto.getId().equals(quartoAnterior.getId());
+        if (trocouDeQuarto && !quarto.temVaga(internacaoRepository.countByQuarto_IdAndDataEfetivaAltaIsNull(quarto.getId()))) {
+            throw new RegraDeNegocioException("O quarto não possui vagas disponíveis.");
+        }
+        internacao.setPaciente(paciente); internacao.setProfissional(profissional); internacao.setQuarto(quarto);
+        internacao.setDataEntrada(dados.getDataEntrada()); internacao.setDataPrevistaAlta(dados.getDataPrevistaAlta());
+        internacao.setObservacoes(dados.getObservacoes());
+        internacao.validar();
+        Internacao atualizada = internacaoRepository.save(internacao);
+        if (trocouDeQuarto) {
+            quartoAnterior.atualizarSituacao(internacaoRepository.countByQuarto_IdAndDataEfetivaAltaIsNull(quartoAnterior.getId()));
+            quarto.atualizarSituacao(internacaoRepository.countByQuarto_IdAndDataEfetivaAltaIsNull(quarto.getId()));
+            quartoRepository.save(quartoAnterior); quartoRepository.save(quarto);
+        }
+        return ResponseEntity.ok(atualizada);
     }
 
     @PatchMapping("/{id}/alta") @Transactional

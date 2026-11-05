@@ -2,9 +2,12 @@ package com.healthtech.hospital.controller;
 
 import com.healthtech.hospital.exception.RegraDeNegocioException;
 import com.healthtech.hospital.model.Cirurgiao;
+import com.healthtech.hospital.model.MedicoEspecialista;
 import com.healthtech.hospital.model.ProcedimentoCirurgico;
 import com.healthtech.hospital.model.Profissional;
 import com.healthtech.hospital.model.enums.StatusCirurgia;
+import com.healthtech.hospital.model.enums.StatusConsulta;
+import com.healthtech.hospital.repository.ConsultaRepository;
 import com.healthtech.hospital.repository.ProcedimentoCirurgicoRepository;
 import com.healthtech.hospital.repository.ProfissionalRepository;
 import jakarta.validation.Valid;
@@ -21,11 +24,14 @@ public class ProfissionalController {
 
     private final ProfissionalRepository profissionalRepository;
     private final ProcedimentoCirurgicoRepository procedimentoRepository;
+    private final ConsultaRepository consultaRepository;
 
     public ProfissionalController(ProfissionalRepository profissionalRepository,
-                                  ProcedimentoCirurgicoRepository procedimentoRepository) {
+                                  ProcedimentoCirurgicoRepository procedimentoRepository,
+                                  ConsultaRepository consultaRepository) {
         this.profissionalRepository = profissionalRepository;
         this.procedimentoRepository = procedimentoRepository;
+        this.consultaRepository = consultaRepository;
     }
 
     /** Ex.: GET /profissionais?especialidade=Cardiologia lista só os especialistas daquela área. */
@@ -74,6 +80,44 @@ public class ProfissionalController {
                 profissionalRepository.save(profissional);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(profissionalSalvo);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Profissional> atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody Profissional dados) {
+
+        Optional<Profissional> encontrado = profissionalRepository.findById(id);
+        if (encontrado.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Profissional profissional = encontrado.get();
+        if (!profissional.getClass().equals(dados.getClass())) {
+            throw new RegraDeNegocioException("Não é possível alterar o tipo do profissional.");
+        }
+
+        profissional.setNome(dados.getNome());
+        profissional.setRegistroProfissional(dados.getRegistroProfissional());
+        profissional.setTelefone(dados.getTelefone());
+        profissional.setEmail(dados.getEmail());
+
+        if (profissional instanceof MedicoEspecialista atual && dados instanceof MedicoEspecialista novos) {
+            long consultasEmAberto = consultaRepository.contarDeOutraEspecialidade(
+                    id,
+                    List.of(StatusConsulta.AGENDADA, StatusConsulta.CONFIRMADA, StatusConsulta.EM_ATENDIMENTO),
+                    novos.getEspecialidade());
+            if (consultasEmAberto > 0) {
+                throw new RegraDeNegocioException("O especialista possui " + consultasEmAberto
+                        + " consulta(s) em aberto em outra especialidade.");
+            }
+            atual.setEspecialidade(novos.getEspecialidade());
+        }
+        if (profissional instanceof Cirurgiao atual && dados instanceof Cirurgiao novos) {
+            atual.setAreaCirurgica(novos.getAreaCirurgica());
+        }
+
+        return ResponseEntity.ok(profissionalRepository.save(profissional));
     }
 
     @DeleteMapping("/{id}")

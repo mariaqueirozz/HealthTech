@@ -134,11 +134,15 @@ public class ConsultaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        if (!consultaRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+        Consulta consulta = buscar(id);
+
+        if (consulta.getStatus() != StatusConsulta.AGENDADA && consulta.getStatus() != StatusConsulta.CONFIRMADA) {
+            throw new RegraDeNegocioException(
+                    "Só é possível excluir consultas agendadas ou confirmadas (situação atual: "
+                            + consulta.getStatus() + ").");
         }
 
-        consultaRepository.deleteById(id);
+        consultaRepository.delete(consulta);
 
         return ResponseEntity.noContent().build();
     }

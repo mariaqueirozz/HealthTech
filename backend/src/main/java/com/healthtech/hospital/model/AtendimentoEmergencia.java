@@ -1,6 +1,8 @@
 package com.healthtech.hospital.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.OptBoolean;
 import com.healthtech.hospital.exception.RegraDeNegocioException;
 import com.healthtech.hospital.model.enums.PrioridadeEmergencia;
 import com.healthtech.hospital.model.enums.StatusEmergencia;
@@ -8,6 +10,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "tipo", requireTypeIdForSubtypes = OptBoolean.FALSE)
 public class AtendimentoEmergencia extends Atendimento {
 
     @Enumerated(EnumType.STRING)

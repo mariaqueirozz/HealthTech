@@ -29,8 +29,15 @@ public class EmergenciaController {
     }
 
     @GetMapping
-    public List<AtendimentoEmergencia> listar(@RequestParam(required = false) StatusEmergencia situacao) {
-        return situacao == null ? emergenciaRepository.findAll() : emergenciaRepository.findByStatus(situacao);
+    public List<AtendimentoEmergencia> listar(@RequestParam(required = false) StatusEmergencia status) {
+        return status == null ? emergenciaRepository.findAll() : emergenciaRepository.findByStatus(status);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AtendimentoEmergencia> buscarPorId(@PathVariable Long id) {
+        return emergenciaRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

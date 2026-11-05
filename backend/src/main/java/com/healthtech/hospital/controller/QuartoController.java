@@ -41,4 +41,9 @@ public class QuartoController {
             quarto.atualizarSituacao(ocupacao); return ResponseEntity.ok(quartoRepository.save(quarto));
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @DeleteMapping("/{id}") public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        if (!quartoRepository.existsById(id)) return ResponseEntity.notFound().build();
+        quartoRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
