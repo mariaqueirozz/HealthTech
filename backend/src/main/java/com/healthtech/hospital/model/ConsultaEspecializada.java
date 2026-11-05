@@ -1,8 +1,7 @@
 package com.healthtech.hospital.model;
 
 import com.healthtech.hospital.exception.RegraDeNegocioException;
-import com.healthtech.hospital.model.Consulta;
-import com.healthtech.hospital.model.MedicoEspecialista;
+
 
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
