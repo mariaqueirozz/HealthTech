@@ -57,6 +57,7 @@ class MedicoClinicoGeral {
 class MedicoEspecialista {
   - especialidade: String
   + atende(especialidadeSolicitada: String): boolean
+  + validar(): void
 }
 
 class Cirurgiao {
