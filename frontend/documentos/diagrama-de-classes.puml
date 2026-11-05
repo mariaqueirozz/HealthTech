@@ -1,0 +1,230 @@
+@startuml diagrama-de-classes
+!pragma layout smetana
+hide circle
+hide empty members
+skinparam monochrome true
+skinparam shadowing false
+skinparam legendBackgroundColor white
+skinparam legendFontSize 12
+skinparam titleFontSize 20
+skinparam titleFontName Arial
+skinparam dpi 110
+skinparam nodesep 45
+skinparam ranksep 60
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor white
+skinparam classBorderThickness 1.2
+skinparam classAttributeFontName Consolas
+skinparam classAttributeFontSize 12
+skinparam classFontName Arial
+skinparam classFontStyle bold
+skinparam classFontSize 14
+skinparam stereotypeFontSize 11
+skinparam arrowFontName Arial
+skinparam arrowFontSize 11
+title HealthTech
+
+' ===== Pessoas e recursos =====
+class Paciente {
+  - id: Long
+  - nome: String
+  - cpf: String
+  - dataNascimento: LocalDate
+  - telefone: String
+  - endereco: String
+  - email: String
+}
+
+abstract class Profissional <<abstract>> {
+  - id: Long
+  - nome: String
+  - registroProfissional: String
+  - telefone: String
+  - email: String
+}
+
+abstract class Medico <<abstract>>
+
+class MedicoClinicoGeral {
+  --
+  + encaminhar(paciente: Paciente,
+      especialista: MedicoEspecialista,
+      dataHora: LocalDateTime): ConsultaEspecializada
+  + registrarConsulta(consulta: Consulta,
+      observacoes: String): void
+}
+
+class MedicoEspecialista {
+  - especialidade: String
+  + atende(especialidadeSolicitada: String): boolean
+}
+
+class Cirurgiao {
+  - areaCirurgica: String
+}
+
+class Quarto {
+  - id: Long
+  - numero: String
+  - andar: Integer
+  - capacidadeMaxima: Integer
+  - tipo: TipoQuarto
+  - situacao: SituacaoQuarto
+  + validar(): void
+  + temVaga(ocupacaoAtual: long): boolean
+  + atualizarSituacao(ocupacaoAtual: long): void
+}
+
+class Internacao {
+  - id: Long
+  - dataEntrada: LocalDate
+  - dataPrevistaAlta: LocalDate
+  - dataEfetivaAlta: LocalDate
+  - observacoes: String
+  + validar(): void
+  + registrarAlta(data: LocalDate): void
+  + isAtiva(): boolean
+}
+
+' ===== Atendimentos =====
+abstract class Atendimento <<abstract>> {
+  - id: Long
+  - dataHora: LocalDateTime
+  + {abstract} validar(): void
+  # validarComum(): void
+  + confirmar(): void
+  + iniciar(): void
+  + concluir(): void
+  + cancelar(): void
+  + marcarNaoComparecimento(): void
+  + registrarObservacoes(observacoes: String): void
+  - naoSuportada(acao: String): RegraDeNegocioException
+}
+
+abstract class Consulta <<abstract>> {
+  - status: StatusConsulta
+  - observacoes: String
+  - mudarPara(novo: StatusConsulta): void
+  + confirmar(): void
+  + iniciar(): void
+  + concluir(): void
+  + cancelar(): void
+  + marcarNaoComparecimento(): void
+  + registrarObservacoes(observacoes: String): void
+}
+
+class ConsultaRotina {
+  - motivo: String
+  + validar(): void
+}
+
+class ConsultaEspecializada {
+  - especialidade: String
+  + validar(): void
+}
+
+class AtendimentoEmergencia {
+  - prioridade: PrioridadeEmergencia
+  - status: StatusEmergencia
+  + validar(): void
+  + iniciar(): void
+  + concluir(): void
+}
+
+class ProcedimentoCirurgico {
+  - descricao: String
+  - tipoCirurgia: String
+  - observacoesPreOperatorias: String
+  - observacoesPosOperatorias: String
+  - dataHoraEfetiva: LocalDateTime
+  - status: StatusCirurgia
+  + validar(): void
+  + iniciar(): void
+  + concluir(): void
+  + cancelar(): void
+  + registrarObservacoes(observacoes: String): void
+}
+
+' ===== Enumerações =====
+enum StatusConsulta <<enumeration>> {
+  AGENDADA
+  CONFIRMADA
+  EM_ATENDIMENTO
+  CONCLUIDA
+  CANCELADA
+  NAO_COMPARECEU
+  + proximosPermitidos(): Set<StatusConsulta>
+  + podeIrPara(novo: StatusConsulta): boolean
+}
+
+enum PrioridadeEmergencia <<enumeration>> {
+  BAIXA
+  MODERADA
+  ALTA
+  CRITICA
+}
+
+enum StatusEmergencia <<enumeration>> {
+  AGUARDANDO
+  INICIADO
+  CONCLUIDO
+}
+
+enum StatusCirurgia <<enumeration>> {
+  AGENDADO
+  EM_ANDAMENTO
+  CONCLUIDO
+  CANCELADO
+}
+
+enum TipoQuarto <<enumeration>> {
+  ENFERMARIA(6)
+  APARTAMENTO(2)
+  UTI(1)
+  - capacidadeMaximaPermitida: int
+  + getCapacidadeMaximaPermitida(): int
+}
+
+enum SituacaoQuarto <<enumeration>> {
+  DISPONIVEL
+  OCUPADO
+}
+
+' ===== Herança =====
+Atendimento <|-- Consulta
+Atendimento <|-- AtendimentoEmergencia
+Atendimento <|-- ProcedimentoCirurgico
+Consulta <|-- ConsultaRotina
+Consulta <|-- ConsultaEspecializada
+Profissional <|-- Medico
+Medico <|-- MedicoClinicoGeral
+Medico <|-- MedicoEspecialista
+Medico <|-- Cirurgiao
+
+' ===== Associações =====
+Internacao "0..*" -left-> "1" Paciente : interna
+Internacao "0..*" -right-> "1" Quarto : ocupa
+Internacao "0..*" --> "1" Profissional : responsável
+Atendimento "0..*" -up-> "1" Paciente : atende
+Atendimento "0..*" -right-> "1" Profissional : responsável
+
+' ===== Enumerações usadas =====
+Consulta --> StatusConsulta
+AtendimentoEmergencia --> PrioridadeEmergencia
+AtendimentoEmergencia --> StatusEmergencia
+ProcedimentoCirurgico --> StatusCirurgia
+Quarto --> TipoQuarto
+Quarto --> SituacaoQuarto
+
+' ===== Dependências =====
+ConsultaEspecializada <.left. MedicoClinicoGeral : <<encaminha>>
+
+legend bottom left
+  <b>Profissional exigido em validar()</b>
+  ConsultaRotina: Medico
+  ConsultaEspecializada: MedicoEspecialista com especialidade compatível
+  AtendimentoEmergencia: Medico
+  ProcedimentoCirurgico: Cirurgiao
+  Internacao: Medico
+endlegend
+@enduml
