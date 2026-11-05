@@ -36,6 +36,13 @@ public class Quarto {
     private SituacaoQuarto situacao = SituacaoQuarto.DISPONIVEL;
 
     public void validar() {
+        if (tipo == null) {
+            throw new RegraDeNegocioException("O tipo do quarto é obrigatório.");
+        }
+        if (capacidadeMaxima == null || capacidadeMaxima < 1) {
+            throw new RegraDeNegocioException("A capacidade máxima deve ser maior que zero.");
+        }
+
         int limite = tipo.getCapacidadeMaximaPermitida();
         if (capacidadeMaxima > limite) {
             throw new RegraDeNegocioException("Um quarto do tipo " + tipo + " comporta no máximo " + limite + " paciente(s).");
@@ -43,10 +50,21 @@ public class Quarto {
     }
 
     public boolean temVaga(long ocupacaoAtual) {
+        validar();
+        if (ocupacaoAtual < 0) {
+            throw new RegraDeNegocioException("A ocupação atual não pode ser negativa.");
+        }
         return ocupacaoAtual < capacidadeMaxima;
     }
 
     public void atualizarSituacao(long ocupacaoAtual) {
+        validar();
+        if (ocupacaoAtual < 0) {
+            throw new RegraDeNegocioException("A ocupação atual não pode ser negativa.");
+        }
+        if (ocupacaoAtual > capacidadeMaxima) {
+            throw new RegraDeNegocioException("A ocupação não pode ultrapassar a capacidade máxima do quarto.");
+        }
         situacao = ocupacaoAtual >= capacidadeMaxima ? SituacaoQuarto.OCUPADO : SituacaoQuarto.DISPONIVEL;
     }
 
